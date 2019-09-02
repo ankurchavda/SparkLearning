@@ -1,1 +1,1 @@
-"# SparkLearning" 
+This repository contains a set of questions and answers that can be referred to while learning Spark and well as can be used as a source to refer while preparing for exams and interviews.
