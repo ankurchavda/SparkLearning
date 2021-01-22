@@ -1,7 +1,13 @@
+### Spark Learning Guide
+
+###### You can use this guide to learn about different components in spark and use this a reference material.
+
 1. What is Spark?
+
 Apache Spark is a cluster computing platform designed to be fast and general-purpose. At its core, Spark is a “computational engine” that is responsible for scheduling, distributing, and monitoring applications consisting of many computational tasks across many worker machines or a computing cluster.
 --------------------------
 2. What is a Spark Core?
+
 Spark Core contains the basic functionality of Spark, including components for task scheduling, memory management, fault recovery, interacting with storage systems, and more. Spark Core is also home to the API that defines resilient distributed datasets (RDDs), which are Spark’s main programming abstraction. RDDs represent a collection of items distributed across many compute nodes that can be manipulated in parallel. Spark Core provides many APIs for building and manipulating these collections.
 --------------------------
 3. Key features of Spark -
@@ -19,9 +25,6 @@ Spark SQL – Helps execute SQL like queries on Spark data using standard visual
 5. What is an RDD?
 An RDD is, essentially, the Spark representation of a set of data, spread across multiple machines, with APIs to let you act on it. An RDD could come from any data source, e.g. text files, a database via JDBC, etc.
 Def - "RDDs are fault-tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their partitioning to optimize data placement, and manipulate them using a rich set of operators."
---------------------------
-5a. What is a dataframe?
-A dataframe is a distributed collection of data grouped into named columnns.
 --------------------------
 6. How are RDDs created?
 Spark provides two ways to create RDDs: loading an external dataset and parallelizing a collection in your driver program.
@@ -53,13 +56,12 @@ Some examples of actions are - aggregate, collect, count, countApprox*, countByV
 Anatomy of Spark Application: https://luminousmen.com/post/spark-anatomy-of-spark-application
 
 12. What is a driver?
+
 https://stackoverflow.com/a/24638280
 
 The driver process runs your main() function, sits on a node in the cluster, and is responsible for three things: maintaining information about the Spark Application; responding to a user’s program or input; and analyzing, distributing, and scheduling work across the executors (defined momentarily).
-
-            |- Prepares Spark Context
-Driver ---  |
-            |- Declares operations on the RDD using Transformations and Actions. Submits serialized RDD graph to master.
+- Prepares Spark Context
+- Declares operations on the RDD using Transformations and Actions. Submits serialized RDD graph to master.
 --------------------------
 13. What is a Task?
 A task is a unit of work that can be run on a partition of a distributed dataset and gets executed on a single executor. The unit of parallel execution is at the task level. All the tasks within a single stage can be executed in parallel.
@@ -75,6 +77,7 @@ Hadoop is basically 2 things: a Distributed FileSystem (HDFS) + a Computation or
 Hive: It provides us with data warehousing facilities on top of an existing Hadoop cluster. Along with that, it provides an SQL like interface which makes your work easier, in case you are coming from an SQL background. You can create tables in Hive and store data there. Along with that you can even map your existing HBase tables to Hive and operate on them.
 --------------------------
 17. What is parquet?
+
 https://stackoverflow.com/a/36831549/8515731
 --------------------------
 18. What file systems does Spark support?
@@ -133,10 +136,12 @@ The most common way is to avoid operations ByKey, repartition or any other opera
 Broadcast variables allow the programmer to keep a read-only variable cached on each machine rather than shipping a copy of it with tasks. They can be used, for example, to give every node a copy of a large input dataset in an efficient manner. Spark also attempts to distribute broadcast variables using efficient broadcast algorithms to reduce communication cost.
 Spark actions are executed through a set of stages, separated by distributed “shuffle” operations. Spark automatically broadcasts the common data needed by tasks within each stage. The data broadcasted this way is cached in serialized form and deserialized before running each task. This means that explicitly creating broadcast variables is only useful when tasks across multiple stages need the same data or when caching the data in deserialized form is important.
 Broadcast variables are created from a variable v by calling SparkContext.broadcast(v). The broadcast variable is a wrapper around v, and its value can be accessed by calling the value method. The code below shows this:
->>> broadcastVar = sc.broadcast([1, 2, 3])
+```python
+broadcastVar = sc.broadcast([1, 2, 3])
 <pyspark.broadcast.Broadcast object at 0x102789f10>
 >>> broadcastVar.value
 [1, 2, 3]
+```
 After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
 --------------------------
 28. Why is there a need for broadcast variables when working with Apache Spark?
@@ -305,6 +310,9 @@ Joins, the worse being cross joins
 Sorting
 Distinct
 GroupBy
+--------------------------
+59. What is a dataframe?
+A dataframe is a distributed collection of data grouped into named columnns.
 --------------------------
 General Perfomance guidelines - 
 One Executor per node is considered to be more stable than two or three executors per node as is used in systems like YARN.
