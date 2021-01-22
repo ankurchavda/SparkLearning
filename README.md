@@ -1,6 +1,6 @@
-### Spark Learning Guide
+## Spark Learning Guide
 
-###### You can use this guide to learn about different components in spark and use this a reference material.
+#### You can use this guide to learn about different components of spark and use this as reference material.
 
 1. What is Spark?  
 Apache Spark is a cluster computing platform designed to be fast and general-purpose. At its core, Spark is a “computational engine” that is responsible for scheduling, distributing, and monitoring applications consisting of many computational tasks across many worker machines or a computing cluster.
