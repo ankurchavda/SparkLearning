@@ -2,12 +2,10 @@
 
 ###### You can use this guide to learn about different components in spark and use this a reference material.
 
-1. What is Spark?
-
+1. What is Spark?  
 Apache Spark is a cluster computing platform designed to be fast and general-purpose. At its core, Spark is a “computational engine” that is responsible for scheduling, distributing, and monitoring applications consisting of many computational tasks across many worker machines or a computing cluster.
 --------------------------
-2. What is a Spark Core?
-
+2. What is a Spark Core?  
 Spark Core contains the basic functionality of Spark, including components for task scheduling, memory management, fault recovery, interacting with storage systems, and more. Spark Core is also home to the API that defines resilient distributed datasets (RDDs), which are Spark’s main programming abstraction. RDDs represent a collection of items distributed across many compute nodes that can be manipulated in parallel. Spark Core provides many APIs for building and manipulating these collections.
 --------------------------
 3. Key features of Spark -
@@ -76,8 +74,7 @@ A core is a basic computation unit of CPU and a CPU may have one or more cores t
 Hadoop is basically 2 things: a Distributed FileSystem (HDFS) + a Computation or Processing framework (MapReduce). Like all other FS, HDFS also provides us with storage, but in a fault-tolerant manner with high throughput and lower risk of data loss (because of the replication). But, being an FS, HDFS lacks random read and write access. This is where HBase comes into the picture. It's a distributed, scalable, big data store, modelled after Google's BigTable. It stores data as key/value pairs.
 Hive: It provides us with data warehousing facilities on top of an existing Hadoop cluster. Along with that, it provides an SQL like interface which makes your work easier, in case you are coming from an SQL background. You can create tables in Hive and store data there. Along with that you can even map your existing HBase tables to Hive and operate on them.
 --------------------------
-17. What is parquet?
-
+17. What is parquet?  
 https://stackoverflow.com/a/36831549/8515731
 --------------------------
 18. What file systems does Spark support?
@@ -101,8 +98,8 @@ The Scheduler is responsible for allocating resources to the various running app
 The Scheduler has a pluggable policy which is responsible for partitioning the cluster resources among the various queues, applications etc. The current schedulers such as the CapacityScheduler and the FairScheduler would be some examples of plug-ins.
 The ApplicationsManager is responsible for accepting job-submissions, negotiating the first container for executing the application specific ApplicationMaster and provides the service for restarting the ApplicationMaster container on failure. The per-application ApplicationMaster has the responsibility of negotiating appropriate resource containers from the Scheduler, tracking their status and monitoring for progress.
 A good guide to understand how Spark works with YARN - 
-1. https://youtu.be/N6pJhxCPe-Y
-2. https://stackoverflow.com/questions/24909958/spark-on-yarn-concept-understanding?noredirect=1&lq=1
+- https://youtu.be/N6pJhxCPe-Y
+- https://stackoverflow.com/questions/24909958/spark-on-yarn-concept-understanding?noredirect=1&lq=1
 --------------------------
 21. What is MapReduce?
 https://www.guru99.com/introduction-to-mapreduce.html
@@ -145,15 +142,15 @@ broadcastVar = sc.broadcast([1, 2, 3])
 After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
 --------------------------
 28. Why is there a need for broadcast variables when working with Apache Spark?
-These are read-only variables, present in-memory cache on every machine. When working with Spark, usage of broadcast variables eliminates the necessity to ship copies of a variable for every task, so data can be processed faster. Broadcast variables help in storing a lookup table inside the memory which enhances the retrieval efficiency when compared to an RDD lookup ().
+These are read-only variables, present in-memory cache on every machine. When working with Spark, usage of broadcast variables eliminates the necessity to ship copies of a variable for every task, so data can be processed faster. Broadcast variables help in storing a lookup table inside the memory which enhances the retrieval efficiency when compared to an RDD lookup ().  
 https://stackoverflow.com/questions/26884871/what-are-broadcast-variables-what-problems-do-they-solve
 --------------------------
 29. What is a Closure?
-The closure is those variables and methods which must be visible for the executor to perform its computations on the RDD (in this case foreach()). Closure is serialized and sent to each executor. The variables within the closure sent to each executor are copies.
+The closure is those variables and methods which must be visible for the executor to perform its computations on the RDD (in this case foreach()). Closure is serialized and sent to each executor. The variables within the closure sent to each executor are copies.  
 https://spark.apache.org/docs/2.2.0/rdd-programming-guide.html#understanding-closures-a-nameclosureslinka
 --------------------------
 30. What are Accumulators?
-Accumulators are variables that are "added" to through an associative and commutative "add" operation. They act as a container for accumulating partial values across multiple tasks (running on executors). They are designed to be used safely and efficiently in parallel and distributed Spark computations and are meant for distributed counters and sums.
+Accumulators are variables that are "added" to through an associative and commutative "add" operation. They act as a container for accumulating partial values across multiple tasks (running on executors). They are designed to be used safely and efficiently in parallel and distributed Spark computations and are meant for distributed counters and sums.  
 https://spark.apache.org/docs/2.2.0/rdd-programming-guide.html#accumulators
 --------------------------
 31. How can you trigger automatic clean-ups in Spark to handle accumulated metadata?
@@ -237,7 +234,7 @@ Spark developer often makes mistakes with managing directed acyclic graphs (DAG'
 def SampleAvg(x, y):
 return (x+y)/2.0;
 avg = Samplerdd.reduce(SampleAvg);
-
+----------------------------
 What is wrong with the above code and how will you correct it 
 Average function is neither commutative nor associative. The best way to compute average is to first sum it and then divide it by count as shown below -
 def sum(x, y):
@@ -301,7 +298,7 @@ Local distinct      Global distinct
 Local sort          Global sort
 Local aggregate     Global aggregate
 --------------------------
-58. What is shuffling?
+59. What is shuffling?
 Shuffling is the process of rearranging data within a cluster between stages.
 Triggered by wide transformations like -
 Repartition
@@ -311,9 +308,9 @@ Sorting
 Distinct
 GroupBy
 --------------------------
-59. What is a dataframe?
+60. What is a dataframe?
 A dataframe is a distributed collection of data grouped into named columnns.
 --------------------------
-General Perfomance guidelines - 
+*General Perfomance guidelines - *  
 One Executor per node is considered to be more stable than two or three executors per node as is used in systems like YARN.
 Try to group wide tranformations together for best automatic optimization 
