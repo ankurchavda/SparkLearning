@@ -171,28 +171,28 @@ Spark need not be installed when running a job under YARN or Mesos because Spark
 35. What is the Catalyst framework?  
 Catalyst framework is a new optimization framework present in Spark SQL. It allows Spark to automatically transform SQL queries by adding new optimizations to build a faster processing system.
 
-    It goes through 4 transformational phases - 
-    - Analysis
-    - Logical optimization
-    - Physical planning
-    - Code generation
+It goes through 4 transformational phases - 
+- Analysis
+- Logical optimization
+- Physical planning
+- Code generation
 
-    Phase 1: Analysis
-    Abstract Syntax Tree is generated from dataframe or query
-    List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
+Phase 1: Analysis
+Abstract Syntax Tree is generated from dataframe or query
+List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
 
-    Phase 2 : Logical Optimization
-    Comprises of two internal stages.
-    In Stage 1, Catalyst optimizer will construct a set of multiple plans
-    In Stage 2, Cost-based optimizer assigns cost to each plan. This may include for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
+Phase 2 : Logical Optimization
+Comprises of two internal stages.
+In Stage 1, Catalyst optimizer will construct a set of multiple plans
+In Stage 2, Cost-based optimizer assigns cost to each plan. This may include for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
 
-    Phase 3 : Physical Planning
-    In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
+Phase 3 : Physical Planning
+In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
 
-    Phase 4 : Code generation
-    Generation of efficient java byte code to run on each machine. 
-    Spark acts a compiler facilitated by Project Tungsten for whole stage code generation.
-    Whole stage code generation is a physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
+Phase 4 : Code generation
+Generation of efficient java byte code to run on each machine. 
+Spark acts a compiler facilitated by Project Tungsten for whole stage code generation.
+Whole stage code generation is a physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
 
 --------------------------
 36. Which spark library allows reliable file sharing at memory speed across different cluster frameworks?  
