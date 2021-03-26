@@ -1,7 +1,7 @@
 ## Spark Learning Guide
 
 ### You can use this guide to learn about different components of spark and use this as reference material.
-#### This material has been created using multiple sources from the internet, Spark Learning 2.0.
+#### This material has been created using multiple sources from the internet and Spark Learning 2.0 book.
 
 1. What is Spark?  
 Apache Spark is a cluster computing platform designed to be fast and general-purpose. At its core, Spark is a “computational engine” that is responsible for scheduling, distributing, and monitoring applications consisting of many computational tasks across many worker machines or a computing cluster.
@@ -140,7 +140,7 @@ broadcastVar = sc.broadcast([1, 2, 3])
 >>> broadcastVar.value
 [1, 2, 3]
 ```
-After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
+    After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
 --------------------------
 28. Why is there a need for broadcast variables when working with Apache Spark?  
 These are read-only variables, present in-memory cache on every machine. When working with Spark, usage of broadcast variables eliminates the necessity to ship copies of a variable for every task, so data can be processed faster. Broadcast variables help in storing a lookup table inside the memory which enhances the retrieval efficiency when compared to an RDD lookup ().  
@@ -171,28 +171,28 @@ Spark need not be installed when running a job under YARN or Mesos because Spark
 35. What is the Catalyst framework?  
 Catalyst framework is a new optimization framework present in Spark SQL. It allows Spark to automatically transform SQL queries by adding new optimizations to build a faster processing system.
 
-It goes through 4 transformational phases - 
-- Analysis
-- Logical optimization
-- Physical planning
-- Code generation
+    It goes through 4 transformational phases - 
+    - Analysis
+    - Logical optimization
+    - Physical planning
+    - Code generation
 
-Phase 1: Analysis
-Abstract Syntax Tree is generated from dataframe or query
-List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
+    Phase 1: Analysis
+    Abstract Syntax Tree is generated from dataframe or query
+    List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
 
-Phase 2 : Logical Optimization
-Comprises of two internal stages.
-In Stage 1, Catalyst optimizer will construct a set of multiple plans
-In Stage 2, Cost-based optimizer assigns cost to each plan. This may include for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
+    Phase 2 : Logical Optimization
+    Comprises of two internal stages.
+    In Stage 1, Catalyst optimizer will construct a set of multiple plans
+    In Stage 2, Cost-based optimizer assigns cost to each plan. This may include for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
 
-Phase 3 : Physical Planning
-In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
+    Phase 3 : Physical Planning
+    In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
 
-Phase 4 : Code generation
-Generation of efficient java byte code to run on each machine. 
-Spark acts a compiler facilitated by Project Tungsten for whole stage code generation.
-Whole stage code generation is a physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
+    Phase 4 : Code generation
+    Generation of efficient java byte code to run on each machine. 
+    Spark acts a compiler facilitated by Project Tungsten for whole stage code generation.
+    Whole stage code generation is a physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
 
 --------------------------
 36. Which spark library allows reliable file sharing at memory speed across different cluster frameworks?  
@@ -260,7 +260,7 @@ def SampleAvg(x, y):
 return (x+y)/2.0;
 avg = Samplerdd.reduce(SampleAvg);
 ----------------------------
-What is wrong with the above code and how will you correct it 
+50. (A) What is wrong with the above code and how will you correct it?  
 Average function is neither commutative nor associative. The best way to compute average is to first sum it and then divide it by count as shown below -
 def sum(x, y):
 return x+y;
@@ -313,7 +313,8 @@ Inside the SQL tab, we can click on the hob descriptions that we set. This will 
 Executors share machine level resources. That is if node has 4 executors, all the resources would be shared between those.
 Tasks share executor level resources.
 Resources are shared by the cores in a single node. Meaning they share the memory, disk, network. If any of the cores under an executor fail because of OOM or any other reason, the whole executor will be affected and the process on that executor will have to be stopped.
-58. Local and Global Results - 
+--------------------------
+58. Local and Global Results -  
 When certain actions and tranformations are performed there are scenarios when the tasks operate on a partition individually, and then the same operation needs to be performed again globally to get the accurate results. For example if 5 executors give record count of each partition to be 4,5,5,6,4 then a final global count operation is needed to say that the dataset has 24 records. More such operations are -
 
 Stage 1             Stage 2
@@ -325,13 +326,13 @@ Local aggregate     Global aggregate
 --------------------------
 59. What is shuffling?
 Shuffling is the process of rearranging data within a cluster between stages.
-Triggered by wide transformations like -
-Repartition
-ByKey opertaions (except counting)
-Joins, the worse being cross joins
-Sorting
-Distinct
-GroupBy
+Triggered by wide transformations like -  
+Repartition  
+ByKey opertaions (except counting)  
+Joins, the worse being cross joins  
+Sorting  
+Distinct  
+GroupBy  
 --------------------------
 60. What is a dataframe?
 A dataframe is a distributed collection of data grouped into named columnns.
