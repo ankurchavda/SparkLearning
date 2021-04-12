@@ -352,7 +352,7 @@ The computations are not knows to Spark when it happens under an RDD. Whether yo
 your file to ascertain the schema, which for a large data file can be expensive and
 time-consuming.
 - You can detect errors early if data doesn’t match the schema.
-.
+
 --------------------------
 63. Managed vs Unmanaged tables?  
 For a managed table, spark manages both the data and the metadata for the table. While for unmanaged data, spark only manages the metadata. So for a command like `DROP TABLE` spark will only delete the metadata for the managed table.
@@ -365,7 +365,7 @@ Unmanaged tables in Spark can be created like this -
 .option("path", "/tmp/data/us_flights_delay")
 .saveAsTable("us_delay_flights_tbl"))
 ```
-.
+
 --------------------------
 64. How can you speed up Pyspark UDFs?  
 One can create Pandas UDF using the pandas_udf decorator.
