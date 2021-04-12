@@ -140,9 +140,9 @@ broadcastVar = sc.broadcast([1, 2, 3])
 <pyspark.broadcast.Broadcast object at 0x102789f10>
 >>> broadcastVar.value
 [1, 2, 3]
-```  
- 
-##### After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
+#After the broadcast variable is created, it should be used instead of the value v in any functions run on the cluster so that v is not shipped to the nodes more than once. In addition, the object v should not be modified after it is broadcast in order to ensure that all nodes get the same value of the broadcast variable (e.g. if the variable is shipped to a new node later).
+```
+.
 --------------------------
 28. Why is there a need for broadcast variables when working with Apache Spark?  
 These are read-only variables, present in-memory cache on every machine. When working with Spark, usage of broadcast variables eliminates the necessity to ship copies of a variable for every task, so data can be processed faster. Broadcast variables help in storing a lookup table inside the memory which enhances the retrieval efficiency when compared to an RDD lookup ().  
@@ -263,6 +263,7 @@ def SampleAvg(x, y):
     return (x+y)/2.0;
     avg = Samplerdd.reduce(SampleAvg);
 ```
+.
 ----------------------------
 50. (A) What is wrong with the above code and how will you correct it?  
 Average function is neither commutative nor associative. The best way to compute average is to first sum it and then divide it by count as shown below -
@@ -345,12 +346,128 @@ A dataframe is a distributed collection of data grouped into named columnns.
 61. Why not Dataframes and not RDDs?
 The computations are not knows to Spark when it happens under an RDD. Whether you are performing a join, filter, select or aggregation, Spark only sees it as a lamba expression. Even the Iterator[T] dataype is not visible to spark. That leaves no room for Spark to perform optimizations
 --------------------------
-62. Why should you always define your schema upfront when reading a file?
+62. Why should you always define your schema upfront when reading a file?  
 - You relieve Spark from the onus of inferring data types.
 - You prevent Spark from creating a separate job just to read a large portion of
 your file to ascertain the schema, which for a large data file can be expensive and
 time-consuming.
 - You can detect errors early if data doesn’t match the schema.
+.
+--------------------------
+63. Managed vs Unmanaged tables?  
+For a managed table, spark manages both the data and the metadata for the table. While for unmanaged data, spark only manages the metadata. So for a command like `DROP TABLE` spark will only delete the metadata for the managed table.
+
+Unmanaged tables in Spark can be created like this -
+
+```python
+(flights_df
+.write
+.option("path", "/tmp/data/us_flights_delay")
+.saveAsTable("us_delay_flights_tbl"))
+```
+.
+--------------------------
+64. How can you speed up Pyspark UDFs?  
+One can create Pandas UDF using the pandas_udf decorator.
+
+Before introduction of Pandas UDF - 
+- Collect all rows to Spark driver
+- Each row serialized into python's pickle format and sent to python worker process.
+- Child process unpickles each row into huge list of tuples.
+- Pandas dataframe created using `pandas.DataFrame.from_records()`
+This causes issues like - 
+- Even using Cpickle, Python serialization is a slow process
+- `from_records` iterates over the list of pure python data and convert each value to pandas format.
+
+Introduction of Arrow - 
+- Once data is in Arrow format there is no need for pickle/serialization as Arrow data can be directly sent to Python.
+- PyArrow in python utilizes zero-copy methods to create a `pandas.DataFrame` from entire chunks of data instead of processing individual scalar values. 
+- Additionally, the conversion to Arrow data can be done on the JVM and pushed back for the Spark executors to perform in parallel, drastically reducing the load on the driver.
+
+The use of Arrow when calling `toPandas()` needs to be enabled by setting `spark.sql.execution.arrow.enabled` to `true`.
+--------------------------
+####Optimizing and Tuning Spark Applications:  
+
+Static vs. Dynamic resource allocation - 
+- One can use the `spark.dynamicAllocation.enabled` property to use dynamic resource allocation, which scales the number of executors registered with this application up and down based on the workload. Example use cases would be Streaming data, or on-demand analytics where more is asked of the application during peak hours. In a multi-tenant environment Spark may soak up recoures from other applications.
+
+```python
+spark.dynamicAllocation.enabled true
+spark.dynamicAllocation.minExecutors 2
+spark.dynamicAllocation.schedulerBacklogTimeout 1m
+spark.dynamicAllocation.maxExecutors 20
+spark.dynamicAllocation.executorIdleTimeout 2min
+```
+- Request two executors to be created at start.
+- Whenever there are pending tasks that have not been scheduled for over 1 minute, the driver will request a new executor. Max upto 20.
+- If an executor is idle for 2 minutes, driver will terminate it.  
+  
+Configuring Spark executors' memory and shuffle service-
+- Executor memory is divided into three sections
+    - Execution Memory
+    - Storage Memory
+    - Reserved Memory
+- The default division is 60% for execution, 40% for storage after allowing for 300mb of reserved memory, to safegaurd against OOM errors.
+- Execution memory is used for shuffles, joins, sorts and aggregations.
+- Storage memory is primarily used for caching user data structures and partitions derived from DataFrames.
+- During map and shuffle operations, spark writes to and reads from the local disk's shuffle file, so there's heaving I/O activity. 
+- Following configurations can be used during heavy work loads to reduce I/O bottlenecks.
+```python
+spark.driver.memory
+spark.shuffle.file.buffer
+spark.file.transferTo
+spark.shuffle.unsafe.file.output.buffer
+spark.io.compression.lz4.blockSize
+spark.shuffle.service.index.cache.size
+spark.shuffle.registration.timeout
+spark.shuffle.registration.maxAttempts
+```
+
+Spark Parallelism -  
+- To optimize resource utilization and maximize parallelism, the ideal is atleast as many partitions as cores on the executor.
+- How partitions are created - 
+    - Data on disk is laid out in chunks or contiguous file blocks
+    - Default size is 128 in HDFS and S3. A contiguous collection of these blocks is a partition.
+    - Decreasing the partition file size too much may cause the "small file problem" increasing disk I/O and performance degradation.
+    - For smaller workloads the shuffle partitions should be reduced from default 200, to number of cores or executors.
+
+Caching and Persistence of Data -  
+
+Dataframe.cache()
+- cache() will store as many partitions as memory allows. 
+- Dataframes can be fractionally cached, but a partition cannot.
+- Note: A dataframe is not fully cached until you invoke an action that goes through all the records (eg. count). If you use take(1), only one partition will be cached because catalyst realizes that you do not need to compute all the partitions just to retrieve one record.  
+
+Dataframe.persist()  
+- persist(StorageLevel.level) provides control over how your data is cached via StorageLevel. Data on disk is always serlialized using either Java or Kyro.
+- MEMORY_ONLY, MEMORY_ONLY_SER, MEMORY_AND_DISK, DISK_ONLY, OFF_HEAP, MEMORY_AND_DISK_SER are different persist levels one can use.
+
+When to Cache and Persist- 
+- When you want to access large dataset repeatedly for queries and transformations.
+When not to Cache and Persist-
+- Dataframes are too big to cache in memory
+- An inexpensive tranformation on a dataframe not requiring frequent use, regardless of size.
+
+Spark Joins -
+
+Broadcast Hash Join-
+- Also known as map-side only join
+- By default spark uses broadcast join if the smaller data set is less than 10MB.
+- When to use a broadcast hash join -
+    - When each key within the smaller and larger data sets is hashed to the same partition by Spark.
+    - When one data set is much smaller than the other.
+    - When you are not worried by excessive network bandwidth usage or OOM errors because the smaller data set will be broadcast to all Spark executors
+
+Shuffle Sort Merge Join-
+- Over a common key that is sortable, unique and can be stored in the same partition.
+- Sort phase sorts each data set by its desired join key. The merge phase iterates over each key in the row from each dataset and merges if two keys match
+- Optimizing the shuffle sort merge join -
+    - Create partitioned buckets for common sorted keys or columns on which we want to perform frequent equi-joins. 
+    - In case of a column with high cardinality, use bucketing. Else use partitioning.
+- When to use a shuffle sort merge join -
+    - When each key within two large data sets can be sorted and hashed to the same partition by Spark.
+    - When you want to perform only equi-joins to combine two data sets based on matching sorted keys.
+    - When you want to prevent Exchange and Sort operations to save large shuffles across the network.
 --------------------------
 *General Perfomance guidelines - *  
 One Executor per node is considered to be more stable than two or three executors per node as is used in systems like YARN.
