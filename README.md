@@ -384,9 +384,11 @@ Introduction of Arrow -
 - PyArrow in python utilizes zero-copy methods to create a `pandas.DataFrame` from entire chunks of data instead of processing individual scalar values. 
 - Additionally, the conversion to Arrow data can be done on the JVM and pushed back for the Spark executors to perform in parallel, drastically reducing the load on the driver.
 
-The use of Arrow when calling `toPandas()` needs to be enabled by setting `spark.sql.execution.arrow.enabled` to `true`.
---------------------------
-####Optimizing and Tuning Spark Applications:  
+The use of Arrow when calling `toPandas()` needs to be enabled by setting `spark.sql.execution.arrow.enabled` to `true`.  
+
+--------------------------  
+
+#### Optimizing and Tuning Spark Applications:  
 
 Static vs. Dynamic resource allocation - 
 - One can use the `spark.dynamicAllocation.enabled` property to use dynamic resource allocation, which scales the number of executors registered with this application up and down based on the workload. Example use cases would be Streaming data, or on-demand analytics where more is asked of the application during peak hours. In a multi-tenant environment Spark may soak up recoures from other applications.
