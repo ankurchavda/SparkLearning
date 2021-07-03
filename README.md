@@ -2,7 +2,7 @@
 
 ### This material has been created using multiple sources from the internet, Spark Learning 2.0 and The Definitive Guide.  
 
-#### You can use this guide to learn about different components of spark and use this as reference material. This section covers all the topics that is more than enough for you to get started with Spark Theory. You can refer to the advanced topics here -
+#### You can use this guide to learn about different components of spark and use this as reference material. This section covers all the topics that are more than enough for you to get started with Spark Theory. You can refer to the advanced topics here -
 
 - [Optimization Techniques](advanced/optimizations.md)
 - [Joins Internal Working](advanced/joins.md)  
@@ -47,9 +47,9 @@ A corollary: immutable data can as easily live in memory as on disk. This makes 
 --------------------------
 10. What are Transformations?  
 Spark Transformations are functions that produce a new RDD from an existing RDD. An RDD Lineage is built when we apply Transformations on an RDD. Basic Transformations are - map and filter. After the transformation, the resultant RDD is always different from its parent RDD. It can be smaller (e.g. filter, count, distinct, sample), bigger (e.g. flatMap(), union(), Cartesian()) or the same size (e.g. map).
-– Narrow dependency: RDD operations like map, union, filter can operate on a single partition and map the data of that partition to resulting single partition. These kinds of operations which maps data from one to one partition are referred to as Narrow operations. Narrow operations don’t require to distribute the data across the partitions.
+– Narrow dependency: RDD operations like map, union, filter can operate on a single partition and map the data of that partition to the resulting single partition. These kinds of operations that map data from one to one partition are referred to as Narrow operations. Narrow operations don’t require distributing the data across the partitions.
 Each partition of the parent RDD is used by at most one partition of the child RDD.
-– Wide dependency: RDD operations like groupByKey, distinct, join may require to map the data across the partitions in new RDD. These kinds of operations which maps data from one to many partitions are referred to as Wide operations
+– Wide dependency: RDD operations like groupByKey, distinct, join may require mapping the data across the partitions in the new RDD. These kinds of operations which maps data from one to many partitions are referred to as Wide operations
 Each partition of the parent RDD may be depended on by multiple child partitions.
 --------------------------
 11. What are Actions?  
@@ -74,7 +74,7 @@ A task is a unit of work that can be run on a partition of a distributed dataset
 A stage is a collection of tasks that can run in parallel. A new stage is created when there is data shuffling. 
 --------------------------
 15. What is Core?  
-A core is a basic computation unit of CPU and a CPU may have one or more cores to perform tasks at a given time. The more cores we have, the more work we can do. In spark, this controls the number of parallel tasks an executor can run.
+A core is a basic computation unit of a CPU and a CPU may have one or more cores to perform tasks at a given time. The more cores we have, the more work we can do. In spark, this controls the number of parallel tasks an executor can run.
 --------------------------
 16. What is Hadoop, Hive, Hbase?  
 Hadoop is basically 2 things: a Distributed FileSystem (HDFS) + a Computation or Processing framework (MapReduce). Like all other FS, HDFS also provides us with storage, but in a fault-tolerant manner with high throughput and lower risk of data loss (because of the replication). But, being an FS, HDFS lacks random read and write access. This is where HBase comes into the picture. It's a distributed, scalable, big data store, modelled after Google's BigTable. It stores data as key/value pairs.
@@ -83,7 +83,7 @@ Hive: It provides us with data warehousing facilities on top of an existing Hado
 17. What is parquet?    
 https://stackoverflow.com/a/36831549/8515731
 --------------------------
-18. What file systems does Spark support?  
+18. What file systems do Spark support?  
 - Hadoop Distributed File System (HDFS).
 - Local File system.
 - S3
@@ -100,9 +100,9 @@ The fundamental idea of YARN is to split up the functionalities of resource mana
 The ResourceManager and the NodeManager form the data-computation framework. The ResourceManager is the ultimate authority that arbitrates resources among all the applications in the system. The NodeManager is the per-machine framework agent who is responsible for containers, monitoring their resource usage (CPU, memory, disk, network) and reporting the same to the ResourceManager/Scheduler.
 The per-application ApplicationMaster is, in effect, a framework-specific library and is tasked with negotiating resources from the ResourceManager and working with the NodeManager(s) to execute and monitor the tasks.
 The ResourceManager has two main components: Scheduler and ApplicationsManager.
-The Scheduler is responsible for allocating resources to the various running applications subject to familiar constraints of capacities, queues etc. The Scheduler is pure scheduler in the sense that it performs no monitoring or tracking of status for the application. Also, it offers no guarantees about restarting failed tasks either due to application failure or hardware failures. The Scheduler performs its scheduling function based on the resource requirements of the applications; it does so based on the abstract notion of a Resource Container which incorporates elements such as memory, CPU, disk, network etc.
-The Scheduler has a pluggable policy which is responsible for partitioning the cluster resources among the various queues, applications etc. The current schedulers such as the CapacityScheduler and the FairScheduler would be some examples of plug-ins.
-The ApplicationsManager is responsible for accepting job-submissions, negotiating the first container for executing the application specific ApplicationMaster and provides the service for restarting the ApplicationMaster container on failure. The per-application ApplicationMaster has the responsibility of negotiating appropriate resource containers from the Scheduler, tracking their status and monitoring for progress.
+The Scheduler is responsible for allocating resources to the various running applications subject to familiar constraints of capacities, queues etc. The Scheduler is a pure scheduler in the sense that it performs no monitoring or tracking of status for the application. Also, it offers no guarantees about restarting failed tasks either due to application failure or hardware failures. The Scheduler performs its scheduling function based on the resource requirements of the applications; it does so based on the abstract notion of a Resource Container which incorporates elements such as memory, CPU, disk, network etc.
+The Scheduler has a pluggable policy that is responsible for partitioning the cluster resources among the various queues, applications etc. The current schedulers such as the CapacityScheduler and the FairScheduler would be some examples of plug-ins.
+The ApplicationsManager is responsible for accepting job submissions, negotiating the first container for executing the application specific ApplicationMaster and provides the service for restarting the ApplicationMaster container on failure. The per-application ApplicationMaster has the responsibility of negotiating appropriate resource containers from the Scheduler, tracking their status and monitoring for progress.
 A good guide to understand how Spark works with YARN - 
 - https://youtu.be/N6pJhxCPe-Y
 - https://stackoverflow.com/questions/24909958/spark-on-yarn-concept-understanding?  noredirect=1&lq=1
@@ -114,13 +114,13 @@ https://www.guru99.com/introduction-to-mapreduce.html
 https://medium.com/@bradanderson.contacts/spark-vs-hadoop-mapreduce-c3b998285578
 --------------------------
 23. What is an Executor?  
-An executor is a single JVM process which is launched for an application on a worker node. Executor runs tasks and keeps data in memory or disk storage across them. Each application has its own executors. A single node can run multiple executors and executors for an application can span multiple worker nodes. An executor stays up for the duration of the Spark Application and runs the tasks in multiple threads. The number of executors for a spark application can be specified inside the SparkConf or via the flag –num-executors from command-line.
+An executor is a single JVM process that is launched for an application on a worker node. Executor runs tasks and keeps data in memory or disk storage across them. Each application has its own executors. A single node can run multiple executors and executors for an application can span multiple worker nodes. An executor stays up for the duration of the Spark Application and runs the tasks in multiple threads. The number of executors for a spark application can be specified inside the SparkConf or via the flag –num-executors from the command line.
 - Executor performs all the data processing.
 - Reads from and writes data to external sources.
 - Executor stores the computed data in-memory, cache or on hard disk drives.
 - Interacts with the storage systems.
 --------------------------
-24. What are workers, executors, cores in Spark Standalone cluster?  
+24. What are workers, executors, cores in the Spark Standalone cluster?  
 https://stackoverflow.com/questions/32621990/what-are-workers-executors-cores-in-spark-standalone-cluster
 --------------------------
 25. Name types of Cluster Managers in Spark.
@@ -136,8 +136,8 @@ Using Accumulators – Accumulators help update the values of variables in paral
 The most common way is to avoid operations ByKey, repartition or any other operations which trigger shuffles.
 --------------------------
 27. What are broadcast variables?  
-Broadcast variables allow the programmer to keep a read-only variable cached on each machine rather than shipping a copy of it with tasks. They can be used, for example, to give every node a copy of a large input dataset in an efficient manner. Spark also attempts to distribute broadcast variables using efficient broadcast algorithms to reduce communication cost.
-Spark actions are executed through a set of stages, separated by distributed “shuffle” operations. Spark automatically broadcasts the common data needed by tasks within each stage. The data broadcasted this way is cached in serialized form and deserialized before running each task. This means that explicitly creating broadcast variables is only useful when tasks across multiple stages need the same data or when caching the data in deserialized form is important.
+Broadcast variables allow the programmer to keep a read-only variable cached on each machine rather than shipping a copy of it with tasks. They can be used, for example, to give every node a copy of a large input dataset in an efficient manner. Spark also attempts to distribute broadcast variables using efficient broadcast algorithms to reduce communication costs.
+Spark actions are executed through a set of stages, separated by distributed “shuffle” operations. Spark automatically broadcasts the common data needed by tasks within each stage. The data broadcasted this way is cached in serialized form and deserialized before running each task. This means that explicitly creating broadcast variables is only useful when tasks across multiple stages need the same data or when caching the data in the deserialized form is important.
 Broadcast variables are created from a variable v by calling SparkContext.broadcast(v). The broadcast variable is a wrapper around v, and its value can be accessed by calling the value method. The code below shows this:
 
 ```python
@@ -154,7 +154,7 @@ These are read-only variables, present in-memory cache on every machine. When wo
 https://stackoverflow.com/questions/26884871/what-are-broadcast-variables-what-problems-do-they-solve
 --------------------------
 29. What is a Closure?  
-The closure is those variables and methods which must be visible for the executor to perform its computations on the RDD (in this case foreach()). Closure is serialized and sent to each executor. The variables within the closure sent to each executor are copies.  
+The closure is those variables and methods which must be visible for the executor to perform its computations on the RDD (in this case foreach()). The closure is serialized and sent to each executor. The variables within the closure sent to each executor are copies.  
 https://spark.apache.org/docs/2.2.0/rdd-programming-guide.html#understanding-closures-a-nameclosureslinka
 --------------------------
 30. What are Accumulators?  
@@ -188,28 +188,28 @@ Phase 1: Analysis
 Abstract Syntax Tree is generated from dataframe or query
 List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
 
-Phase 2 : Logical Optimization
+Phase 2: Logical Optimization
 Comprises of two internal stages.
-In Stage 1, Catalyst optimizer will construct a set of multiple plans
-In Stage 2, Cost-based optimizer assigns cost to each plan. This may include for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
+In Stage 1, the Catalyst optimizer will construct a set of multiple plans
+In Stage 2, the Cost-based optimizer assigns cost to each plan. This may include, for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
 
-Phase 3 : Physical Planning
+Phase 3: Physical Planning
 In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
 
-Phase 4 : Code generation
+Phase 4: Code generation
 Generation of efficient java byte code to run on each machine. 
-Spark acts a compiler facilitated by Project Tungsten for whole stage code generation.
-Whole stage code generation is a physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
+Spark acts as a compiler facilitated by Project Tungsten for whole stage code generation.
+Whole stage code generation is physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
 
 --------------------------
 36. Which spark library allows reliable file sharing at memory speed across different cluster frameworks?  
 Tachyon
 --------------------------
-37. Explain about the different types of transformations on DStreams?  
+37. Explain the different types of transformations on DStreams?  
 Stateless Transformations- Processing of the batch does not depend on the output of the previous batch. Examples- map (), reduceByKey (), filter ().
 Stateful Transformations- Processing of the batch depends on the intermediary results of the previous batch. Examples- Transformations that depend on sliding windows
 --------------------------
-37. Explain about the popular use cases of Apache Spark
+37. Explain the popular use cases of Apache Spark
 Apache Spark is mainly used for - 
 Iterative machine learning.
 Interactive data analytics and processing.
@@ -232,12 +232,12 @@ MEMORY_AND_DISK_SER, DISK_ONLY
 OFF_HEAP
 --------------------------
 41. Does Apache Spark provide checkpointing?  
-Lineage graphs are always useful to recover RDDs from a failure but this is generally time-consuming if the RDDs have long lineage chains. Spark has an API for checkpointing i.e. a REPLICATE flag to persist. However, the decision on which data to the checkpoint - is decided by the user. Checkpoints are useful when the lineage graphs are long and have wide dependencies.
+Lineage graphs are always useful to recover RDDs from failure but this is generally time-consuming if the RDDs have long lineage chains. Spark has an API for checkpointing i.e. a REPLICATE flag to persist. However, the decision on which data to the checkpoint - is decided by the user. Checkpoints are useful when the lineage graphs are long and have wide dependencies.
 --------------------------
 42. Hadoop uses replication to achieve fault tolerance. How is this achieved in Apache Spark?  
-Data storage model in Apache Spark is based on RDDs. RDDs help achieve fault tolerance through lineage. RDD always has information on how to build from other datasets. If any partition of an RDD is lost due to failure, lineage helps build only that particular lost partition.
+The data storage model in Apache Spark is based on RDDs. RDDs help achieve fault tolerance through lineage. RDD always has information on how to build from other datasets. If any partition of an RDD is lost due to failure, lineage helps build only that particular lost partition.
 --------------------------
-43. Explain about the core components of a distributed Spark application.
+43. Explain the core components of a distributed Spark application.
 Driver- The process that runs the main() method of the program to create RDDs and perform transformations and actions on them.
 Executor –The worker processes that run the individual tasks of a Spark job.
 Cluster Manager-A pluggable component in Spark, to launch Executors and Drivers. The cluster manager allows Spark to run on top of other external managers like Apache Mesos or YARN.
@@ -246,7 +246,7 @@ Cluster Manager-A pluggable component in Spark, to launch Executors and Drivers.
 Spark is intellectual in the manner in which it operates on data. When you tell Spark to operate on a given dataset, it heeds the instructions and makes a note of it, so that it does not forget - but it does nothing, unless asked for the final result. When a transformation like map() is called on an RDD- the operation is not performed immediately. Transformations in Spark are not evaluated until you perform an action. This helps optimize the overall data processing workflow.
 --------------------------
 45. Define a worker node-
-A node that can run the Spark application code in a cluster can be called as a worker node. A worker node can have more than one worker which is configured by setting the SPARK_ WORKER_INSTANCES property in the spark-env.sh file. Only one worker is started if the SPARK_ WORKER_INSTANCES property is not defined.
+A node that can run the Spark application code in a cluster can be called a worker node. A worker node can have more than one worker which is configured by setting the SPARK_ WORKER_INSTANCES property in the spark-env.sh file. Only one worker is started if the SPARK_ WORKER_INSTANCES property is not defined.
 --------------------------
 46. What do you understand by SchemaRDD?  
 An RDD that consists of row objects (wrappers around the basic string or integer arrays) with schema information about the type of data in each column.
@@ -255,7 +255,7 @@ An RDD that consists of row objects (wrappers around the basic string or integer
 Apache spark does not scale well for compute-intensive jobs and consumes a large number of system resources. Apache Spark’s in-memory capability at times comes a major roadblock for cost-efficient processing of big data. Also, Spark does not have its own file management system and hence needs to be integrated with other cloud-based data platforms or apache Hadoop.
 --------------------------
 48. What do you understand by Executor Memory in a Spark application?  
-Every spark application has same fixed heap size and a fixed number of cores for a spark executor. The heap size is what referred to as the Spark executor memory which is controlled with the spark.executor.memory property of the –executor-memory flag. Every spark application will have one executor on each worker node. The executor memory is a measure of how much memory of the worker node will the application utilize.
+Every spark application has the same fixed heap size and a fixed number of cores for a spark executor. The heap size is what referred to as the Spark executor memory which is controlled with the spark.executor.memory property of the –executor-memory flag. Every spark application will have one executor on each worker node. The executor memory is a measure of how much memory of the worker node will the application utilize.
 --------------------------
 49. What according to you is a common mistake apache-spark developers make when using spark?  
 Maintaining the required size of shuffle blocks.
@@ -271,7 +271,7 @@ def SampleAvg(x, y):
 .
 ----------------------------
 50. (A) What is wrong with the above code and how will you correct it?  
-Average function is neither commutative nor associative. The best way to compute average is to first sum it and then divide it by count as shown below -
+The average function is neither commutative nor associative. The best way to compute average is to first sum it and then divide it by count as shown below -
 def sum(x, y):
 return x+y;
 total =Samplerdd.reduce(sum);
@@ -313,19 +313,19 @@ Omit unneeded columns to reduce storage footprint
 --------------------------
 56. Understanding the Spark UI
 Use setJobDescription for better tracking in the Spark UI.
-Use event timeline to analyze jobs that are taking long time to execute
-Event timeline for a stage has various tasks including Executor computing time, which btw should be the most occuring in the timeline. Any other coloured tasks are overhead and should be considered if we want to optimize the process. If there's a lot of overhead time then one should consider creater larger partitions of data.
-In Summary Metrics tab we can see the statistics by quartile for the green tasks in the event timeline. Here we should anaylize Duration to see if the partitions are skewed. If the min-max fields show a greater difference, that indicates skewed partitions.
-Input Size/Records can also be used in the similar way to analyze where there is a larger difference between the min,median and max sizes of partitions.
-Inside the SQL tab, we can click on the hob descriptions that we set. This will lead us to a more explanatory visualization mapped to the actual code that we wrote.
+Use event timeline to analyze jobs that are taking a long time to execute
+The event timeline for a stage has various tasks including Executor computing time, which btw should be the most occurring in the timeline. Any other coloured tasks are overhead and should be considered if we want to optimize the process. If there's a lot of overhead time then one should consider creator larger partitions of data.
+In the Summary Metrics tab, we can see the statistics by quartile for the green tasks in the event timeline. Here we should analyze Duration to see if the partitions are skewed. If the min-max fields show a greater difference, that indicates skewed partitions.
+Input Size/Records can also be used in a similar way to analyze where there is a larger difference between the min, median and max sizes of partitions.
+Inside the SQL tab, we can click on the job descriptions that we set. This will lead us to a more explanatory visualization mapped to the actual code that we wrote.
 --------------------------
 57. Shared resources 
-Executors share machine level resources. That is if node has 4 executors, all the resources would be shared between those.
+Executors share machine level resources. That is if a node has 4 executors, all the resources would be shared between those.
 Tasks share executor level resources.
 Resources are shared by the cores in a single node. Meaning they share the memory, disk, network. If any of the cores under an executor fail because of OOM or any other reason, the whole executor will be affected and the process on that executor will have to be stopped.
 --------------------------
 58. Local and Global Results -  
-When certain actions and tranformations are performed there are scenarios when the tasks operate on a partition individually, and then the same operation needs to be performed again globally to get the accurate results. For example if 5 executors give record count of each partition to be 4,5,5,6,4 then a final global count operation is needed to say that the dataset has 24 records. More such operations are -
+When certain actions and transformations are performed there are scenarios when the tasks operate on a partition individually, and then the same operation needs to be performed again globally to get accurate results. For example, if 5 executors give the record count of each partition to be 4,5,5,6,4 then a final global count operation is needed to say that the dataset has 24 records. More such operations are -
 
 |Stage 1         |    Stage 2 |
 |----------------|--------------------|
@@ -339,17 +339,17 @@ When certain actions and tranformations are performed there are scenarios when t
 Shuffling is the process of rearranging data within a cluster between stages.
 Triggered by wide transformations like -  
 Repartition  
-ByKey opertaions (except counting)  
+ByKey operations (except counting)  
 Joins, the worse being cross joins  
 Sorting  
 Distinct  
 GroupBy  
 --------------------------
 60. What is a dataframe?
-A dataframe is a distributed collection of data grouped into named columnns.
+A dataframe is a distributed collection of data grouped into named columns.
 --------------------------
 61. Why not Dataframes and not RDDs?
-The computations are not knows to Spark when it happens under an RDD. Whether you are performing a join, filter, select or aggregation, Spark only sees it as a lamba expression. Even the Iterator[T] dataype is not visible to spark. That leaves no room for Spark to perform optimizations
+The computations are not known to Spark when it happens under an RDD. Whether you are performing a join, filter, select or aggregation, Spark only sees it as a lambda expression. Even the Iterator[T] datatype is not visible to spark. That leaves no room for Spark to perform optimizations
 --------------------------
 62. Why should you always define your schema upfront when reading a file?  
 - You relieve Spark from the onus of inferring data types.
@@ -375,10 +375,10 @@ Unmanaged tables in Spark can be created like this -
 64. How can you speed up Pyspark UDFs?  
 One can create Pandas UDF using the pandas_udf decorator.
 
-Before introduction of Pandas UDF - 
+Before the introduction of Pandas UDF - 
 - Collect all rows to Spark driver
-- Each row serialized into python's pickle format and sent to python worker process.
-- Child process unpickles each row into huge list of tuples.
+- Each row serialized into python's pickle format and sent to the python worker process.
+- Child process unpickles each row into a huge list of tuples.
 - Pandas dataframe created using `pandas.DataFrame.from_records()`
 This causes issues like - 
 - Even using Cpickle, Python serialization is a slow process
@@ -392,6 +392,6 @@ Introduction of Arrow -
 The use of Arrow when calling `toPandas()` needs to be enabled by setting `spark.sql.execution.arrow.enabled` to `true`.  
 
 --------------------------
-*General Perfomance guidelines - *  
+*General Performance guidelines - *  
 One Executor per node is considered to be more stable than two or three executors per node as is used in systems like YARN.
-Try to group wide tranformations together for best automatic optimization 
+Try to group-wide transformations together for best automatic optimization 
