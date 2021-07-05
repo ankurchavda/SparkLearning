@@ -283,35 +283,35 @@ return x/cnt;
 myrdd1 = Samplerdd.map(divideByCnt);
 avg = Samplerdd.reduce(sum);
 --------------------------
-51. Explain the difference between Spark SQL and Hive.
+51. Explain the difference between Spark SQL and Hive.  
 Spark SQL is faster than Hive.
 Any Hive query can easily be executed in Spark SQL but vice-versa is not true.
 Spark SQL is a library whereas Hive is a framework.
 It is not mandatory to create a metastore in Spark SQL but it is mandatory to create a Hive metastore.
 Spark SQL automatically infers the schema whereas in Hive schema needs to be explicitly declared.
 --------------------------
-52. What is a Spark Session?
+52. What is a Spark Session?  
 The first step of any Spark Application is creating a SparkSession, which enables you to run Spark code. 
 The SparkSession class provides the single entry point to all functionality in Spark using the DataFrame API. 
 This is automatically created for you in a Databricks notebook as the variable, spark.
 --------------------------
-53. Why should one not use a UDF?
+53. Why should one not use a UDF?  
 UDFs can not be optimized by Catalyst Optimizer. To use UDFs, functions must be serialized and sent to executors. And for Python, there is additional overhead from spinning up a Python interpreter on an executor to run a UDF.
 --------------------------
-54. What is an UnsafeRow?
-The data that is "shuffled" is in a format known as UnsafeRow, or more commonly, the Tungsten Binary Format. UnsafeRow is the in-memory storage format for Spark SQL and DataFrames. Advantages include:
-Compactness:
+54. What is an UnsafeRow?  
+The data that is "shuffled" is in a format known as UnsafeRow, or more commonly, the Tungsten Binary Format. UnsafeRow is the in-memory storage format for Spark SQL and DataFrames. Advantages include:  
+Compactness:  
 Column values are encoded using custom encoders, not as JVM objects (as with RDDs).
 The benefit of using Spark custom encoders is that you get almost the same compactness as Java serialization, but significantly faster encoding/decoding speeds.
 For custom data types, it is possible to write custom encoders from scratch.
 Efficiency: 
 Spark can operate directly out of Tungsten, without first deserializing Tungsten data into JVM objects.
 --------------------------
-55. What are some best Caching Practices?
+55. What are some best Caching Practices?  
 Don't cache unless you're sure the dataframe is going to be used multiple times.
 Omit unneeded columns to reduce storage footprint
 --------------------------
-56. Understanding the Spark UI
+56. Understanding the Spark UI  
 Use setJobDescription for better tracking in the Spark UI.
 Use event timeline to analyze jobs that are taking a long time to execute
 The event timeline for a stage has various tasks including Executor computing time, which btw should be the most occurring in the timeline. Any other coloured tasks are overhead and should be considered if we want to optimize the process. If there's a lot of overhead time then one should consider creator larger partitions of data.
@@ -319,7 +319,7 @@ In the Summary Metrics tab, we can see the statistics by quartile for the green 
 Input Size/Records can also be used in a similar way to analyze where there is a larger difference between the min, median and max sizes of partitions.
 Inside the SQL tab, we can click on the job descriptions that we set. This will lead us to a more explanatory visualization mapped to the actual code that we wrote.
 --------------------------
-57. Shared resources 
+57. Shared resources  
 Executors share machine level resources. That is if a node has 4 executors, all the resources would be shared between those.
 Tasks share executor level resources.
 Resources are shared by the cores in a single node. Meaning they share the memory, disk, network. If any of the cores under an executor fail because of OOM or any other reason, the whole executor will be affected and the process on that executor will have to be stopped.
@@ -335,7 +335,7 @@ When certain actions and transformations are performed there are scenarios when 
 |Local sort      |    Global sort|
 |Local aggregate |    Global aggregate|
 --------------------------
-59. What is shuffling?
+59. What is shuffling?  
 Shuffling is the process of rearranging data within a cluster between stages.
 Triggered by wide transformations like -  
 Repartition  
@@ -345,10 +345,10 @@ Sorting
 Distinct  
 GroupBy  
 --------------------------
-60. What is a dataframe?
+60. What is a dataframe?  
 A dataframe is a distributed collection of data grouped into named columns.
 --------------------------
-61. Why not Dataframes and not RDDs?
+61. Why not Dataframes and not RDDs?  
 The computations are not known to Spark when it happens under an RDD. Whether you are performing a join, filter, select or aggregation, Spark only sees it as a lambda expression. Even the Iterator[T] datatype is not visible to spark. That leaves no room for Spark to perform optimizations
 --------------------------
 62. Why should you always define your schema upfront when reading a file?  
@@ -375,7 +375,7 @@ Unmanaged tables in Spark can be created like this -
 64. How can you speed up Pyspark UDFs?  
 One can create Pandas UDF using the pandas_udf decorator.
 
-Before the introduction of Pandas UDF - 
+Before the introduction of Pandas UDF -  
 - Collect all rows to Spark driver
 - Each row serialized into python's pickle format and sent to the python worker process.
 - Child process unpickles each row into a huge list of tuples.
