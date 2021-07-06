@@ -6,8 +6,8 @@
 
 - [Optimization Techniques](advanced/optimizations.md)
 - [Joins Internal Working](advanced/joins.md)  
-
-
+  
+--------------------------
 1. What is Spark?  
 Apache Spark is a cluster computing platform designed to be fast and general-purpose. At its core, Spark is a “computational engine” that is responsible for scheduling, distributing, and monitoring applications consisting of many computational tasks across many worker machines or a computing cluster.
 --------------------------
