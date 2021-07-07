@@ -1,11 +1,10 @@
 # Spark Learning Guide
 
 ### This material has been created using multiple sources from the internet, Spark Learning 2.0 and The Definitive Guide.  
-</br>
 
 #### You can use this guide to learn about different components of Spark and use this as reference material. This section covers all the topics that should be enough for you to get started with Spark Theory.  
-</br>
-You can refer to the advanced topics here -
+
+#### You can refer to the advanced topics here -
 
 - [Optimization Techniques](advanced/optimizations.md)
 - [Joins Internal Working](advanced/joins.md)  
