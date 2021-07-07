@@ -1,15 +1,15 @@
-### Optimizing and Tuning Spark Applications:  
+## Optimizing and Tuning Spark Applications:  
 
-Static vs. Dynamic resource allocation - 
+### Static vs. Dynamic resource allocation - 
 - One can use the `spark.dynamicAllocation.enabled` property to use dynamic resource allocation, which scales the number of executors registered with this application up and down based on the workload. Example use cases would be Streaming data, or on-demand analytics where more is asked of the application during peak hours. In a multi-tenant environment Spark may soak up recoures from other applications.
 
-```python
-spark.dynamicAllocation.enabled true
-spark.dynamicAllocation.minExecutors 2
-spark.dynamicAllocation.schedulerBacklogTimeout 1m
-spark.dynamicAllocation.maxExecutors 20
-spark.dynamicAllocation.executorIdleTimeout 2min
-```
+    ```python
+    spark.dynamicAllocation.enabled true
+    spark.dynamicAllocation.minExecutors 2
+    spark.dynamicAllocation.schedulerBacklogTimeout 1m
+    spark.dynamicAllocation.maxExecutors 20
+    spark.dynamicAllocation.executorIdleTimeout 2min
+    ```
 - Request two executors to be created at start.
 - Whenever there are pending tasks that have not been scheduled for over 1 minute, the driver will request a new executor. Max upto 20.
 - If an executor is idle for 2 minutes, driver will terminate it.  
@@ -24,18 +24,18 @@ Configuring Spark executors' memory and shuffle service-
 - Storage memory is primarily used for caching user data structures and partitions derived from DataFrames.
 - During map and shuffle operations, spark writes to and reads from the local disk's shuffle file, so there's heaving I/O activity. 
 - Following configurations can be used during heavy work loads to reduce I/O bottlenecks.
-```python
-spark.driver.memory
-spark.shuffle.file.buffer
-spark.file.transferTo
-spark.shuffle.unsafe.file.output.buffer
-spark.io.compression.lz4.blockSize
-spark.shuffle.service.index.cache.size
-spark.shuffle.registration.timeout
-spark.shuffle.registration.maxAttempts
-```
+    ```python
+    spark.driver.memory
+    spark.shuffle.file.buffer
+    spark.file.transferTo
+    spark.shuffle.unsafe.file.output.buffer
+    spark.io.compression.lz4.blockSize
+    spark.shuffle.service.index.cache.size
+    spark.shuffle.registration.timeout
+    spark.shuffle.registration.maxAttempts
+    ```
 
-Spark Parallelism -  
+### Spark Parallelism -  
 - To optimize resource utilization and maximize parallelism, the ideal is atleast as many partitions as cores on the executor.
 - How partitions are created - 
     - Data on disk is laid out in chunks or contiguous file blocks
@@ -44,14 +44,14 @@ Spark Parallelism -
     - For smaller workloads the shuffle partitions should be reduced from default 200, to number of cores or executors.
     - Use maxRecordsPerFile option to control how many records go into each partition file. This would help reduce skewed partition.
 
-Caching and Persistence of Data -  
+### Caching and Persistence of Data -  
 
-Dataframe.cache()
+`Dataframe.cache()`
 - cache() will store as many partitions as memory allows. 
 - Dataframes can be fractionally cached, but a partition cannot.
 - Note: A dataframe is not fully cached until you invoke an action that goes through all the records (eg. count). If you use take(1), only one partition will be cached because catalyst realizes that you do not need to compute all the partitions just to retrieve one record.  
 
-Dataframe.persist()  
+``Dataframe.persist()  ``
 - persist(StorageLevel.level) provides control over how your data is cached via StorageLevel. Data on disk is always serlialized using either Java or Kyro.
 - MEMORY_ONLY, MEMORY_ONLY_SER, MEMORY_AND_DISK, DISK_ONLY, OFF_HEAP, MEMORY_AND_DISK_SER are different persist levels one can use.
 
@@ -66,15 +66,17 @@ Statistics Collection -
 - The statistics should be collected and maintained.
 
 Table Level  
-`ANALYZE TABLE table_name COMPUTE STATISTICS`
+```SQL
+ANALYZE TABLE table_name COMPUTE STATISTICS
+```
 
 Column Level  
-```
+```SQL
 ANALYZE TABLE table_name COMPUTE STATISTICS FOR
 COLUMNS column_name1, column_name2, ...
 ```
 
-Spark Joins -
+### Spark Joins -
 
 Broadcast Hash Join-
 - Also known as map-side only join

@@ -1,11 +1,11 @@
 ## Communication Strategies  
 
-#### Big table-to-big table  
+### Big table-to-big table  
 - Joining a big table with another big table leads to shuffle join.
 - In shuffle join, every node talks every other node and they share data according to which node has a certain key or a set of keys.
 - If data is not partitioned well network can become congested with traffic.
 
-#### Big table-to-small table  
+### Big table-to-small table  
 - Small enough table to fit into the memory of a worker node with some breathing room.
 - Replicate our small dataframe onto every worker node
 - Prevents all-to-all communication as earlier.

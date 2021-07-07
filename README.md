@@ -1,8 +1,10 @@
 # Spark Learning Guide
 
 ### This material has been created using multiple sources from the internet, Spark Learning 2.0 and The Definitive Guide.  
+</br>
 
-#### You can use this guide to learn about different components of Spark and use this as reference material. This section covers all the topics that should be enough for you to get started with Spark Theory.
+#### You can use this guide to learn about different components of Spark and use this as reference material. This section covers all the topics that should be enough for you to get started with Spark Theory.  
+</br>
 You can refer to the advanced topics here -
 
 - [Optimization Techniques](advanced/optimizations.md)
@@ -56,7 +58,7 @@ Each partition of the parent RDD may be depended on by multiple child partitions
 11. What are Actions?  
 Actions are RDD operations that produce non-RDD values. They materialize a value in a Spark program. In other words, an RDD operation that returns a value of any type but `RDD[T]` is an action. They trigger the execution of RDD transformations to return values. Simply put, an action evaluates the RDD lineage graph.  
 Actions are one of two ways to send data from executors to the driver (the other being accumulators).  
-Some examples of actions are - `aggregate, collect, count, countApprox*, countByValue*, first, fold, foreach, foreachPartition, max, min, reduce, saveAs* actions, e.g. saveAsTextFile, saveAsHadoopFile, take, takeOrdered, takeSample, toLocalIterator, top, treeAggregate, treeReduce`
+Some examples of actions are - `aggregate, collect, count, countApprox, countByValue, first, fold, foreach, foreachPartition, max, min, reduce, saveAs* actions, saveAsTextFile, saveAsHadoopFile, take, takeOrdered, takeSample, toLocalIterator, top, treeAggregate, treeReduce`
 --------------------------
 [Anatomy of Spark Application - Luminousmen](https://luminousmen.com/post/spark-anatomy-of-spark-application)
 
@@ -115,10 +117,10 @@ The ApplicationsManager is responsible for accepting job submissions, negotiatin
 --------------------------
 23. What is an Executor?  
 An executor is a single JVM process that is launched for an application on a worker node. Executor runs tasks and keeps data in memory or disk storage across them. Each application has its own executors. A single node can run multiple executors and executors for an application can span multiple worker nodes. An executor stays up for the duration of the Spark Application and runs the tasks in multiple threads. The number of executors for a spark application can be specified inside the SparkConf or via the flag –num-executors from the command line.
-- Executor performs all the data processing.
-- Reads from and writes data to external sources.
-- Executor stores the computed data in-memory, cache or on hard disk drives.
-- Interacts with the storage systems.
+    - Executor performs all the data processing.
+    - Reads from and writes data to external sources.
+    - Executor stores the computed data in-memory, cache or on hard disk drives.
+    - Interacts with the storage systems.
 --------------------------
 24. What are workers, executors, cores in the Spark Standalone cluster?  
 [Workers, executors, cores - Stackoverflow](https://stackoverflow.com/questions/32621990/what-are-workers-executors-cores-in-spark-standalone-cluster)
@@ -138,7 +140,7 @@ Minimizing data transfers and avoiding shuffling helps write spark programs that
 27. What are broadcast variables?  
 Broadcast variables allow the programmer to keep a read-only variable cached on each machine rather than shipping a copy of it with tasks. They can be used, for example, to give every node a copy of a large input dataset in an efficient manner. Spark also attempts to distribute broadcast variables using efficient broadcast algorithms to reduce communication costs.
 Spark actions are executed through a set of stages, separated by distributed “shuffle” operations. Spark automatically broadcasts the common data needed by tasks within each stage. The data broadcasted this way is cached in serialized form and deserialized before running each task. This means that explicitly creating broadcast variables is only useful when tasks across multiple stages need the same data or when caching the data in the deserialized form is important.
-Broadcast variables are created from a variable v by calling SparkContext.broadcast(v). The broadcast variable is a wrapper around v, and its value can be accessed by calling the value method. The code below shows this:  
+Broadcast variables are created from a variable v by calling `SparkContext.broadcast(v)`. The broadcast variable is a wrapper around v, and its value can be accessed by calling the value method. The code below shows this:  
 
     ```python
     broadcastVar = sc.broadcast([1, 2, 3])
@@ -183,21 +185,21 @@ Catalyst framework is a new optimization framework present in Spark SQL. It allo
     - Physical planning
     - Code generation
 
-    Phase 1: Analysis
+    Phase 1: Analysis  
     Abstract Syntax Tree is generated from dataframe or query
     List of column names, datatypes, functions, databases etc. are resolved by consulting internal 'Catalog'.
 
-    Phase 2: Logical Optimization
+    Phase 2: Logical Optimization  
     Comprises of two internal stages.
-    In Stage 1, the Catalyst optimizer will construct a set of multiple plans
+    In Stage 1, the Catalyst optimizer will construct a set of multiple plans.  
     In Stage 2, the Cost-based optimizer assigns cost to each plan. This may include, for example, the process of constant folding, predicate pushdown, projection pruning, boolean expression simplification etc.
 
-    Phase 3: Physical Planning
+    Phase 3: Physical Planning  
     In this phase, Spark SQL generates an optimal physical plan for the selected logical plan, using physical operators that match those available in the Spark execution engine.
 
-    Phase 4: Code generation
-    Generation of efficient java byte code to run on each machine. 
-    Spark acts as a compiler facilitated by Project Tungsten for whole stage code generation.
+    Phase 4: Code generation  
+    Generation of efficient java byte code to run on each machine.  
+    Spark acts as a compiler facilitated by Project Tungsten for whole stage code generation.  
     Whole stage code generation is physical query optimization, getting rid of virtual function calls and employing CPU registers for intermediate data. This generates a compact RDD for final execution.
 
 --------------------------
@@ -348,7 +350,7 @@ Triggered by wide transformations like -
 60. What is a dataframe?  
 A dataframe is a distributed collection of data grouped into named columns.
 --------------------------
-61. Why not Dataframes and not RDDs?  
+61. Why Dataframes and not RDDs?  
 The computations are not known to Spark when it happens under an RDD. Whether you are performing a join, filter, select or aggregation, Spark only sees it as a lambda expression. Even the `Iterator[T]` datatype is not visible to spark. That leaves no room for Spark to perform optimizations
 --------------------------
 62. Why should you always define your schema upfront when reading a file?  
