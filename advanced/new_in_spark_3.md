@@ -4,7 +4,7 @@
 
 In Spark 2, the logical and physical optimizations were rule based optimizations. While they improve the performance, they are all based on the estimates and statistics that are generated before runtime. There may be unanticipated problems or tuning opportunities that appear as the query runs.
 
-![Catalyst Optimizer Diagram](..\static\Catalyst-Optimizer-diagram.png)
+![Catalyst Optimizer Diagram](../static/Catalyst-Optimizer-diagram.png)
 
 Adaptive Query Execution allows Spark to re-optimize and adjust query plans based on runtime statistics collected during query executiion.
 
@@ -34,7 +34,7 @@ To solve this problem, we can set a relatively large number of shuffle partition
 
 For example, a small dataset of two partition is involved in a group by operation. The shuffle partition is set to 5, which leads to 5 partitions during the shuffle operation.  With AQE, the other three smaller partitions are coalesced into 1 larger partition, as a result, the final aggregation now only needs to perform three tasks rather than five.
 
-![Partition Coalesce](..\static\partition_coalesce.jpg)
+![Partition Coalesce](../static/partition_coalesce.jpg)
 
 #### Optimize Skew Joins
 
@@ -42,11 +42,11 @@ Data skew occurs when data is unevenly distributed among partitions in the clust
 
 In the below example, AQE splits the A0 partition into two smaller partitions and joins the with B0. This leaders to 5 similar sized tasks that complete nearly at the same time versus one outlier task that takes much more time than the other tasks.
 
-![Skew Join](..\static\skew_join.jpg)
+![Skew Join](../static/skew_join.jpg)
 
 ### Dynamic Partition Pruning
 
 [Dynamic Partition Pruning - Data Savvy Youtube](https://youtu.be/rwUgZP-EBZw)
 
-![Dynamic Partition Pruning](..\static\DPP.jpg)
+![Dynamic Partition Pruning](../static/DPP.jpg)
 

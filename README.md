@@ -8,7 +8,7 @@
 
 - [Optimization Techniques](advanced/optimizations.md)
 - [Joins Internal Working](advanced/joins.md)  
-- [Delta Lake](advanced/delta lake.md)
+- [Delta Lake](advanced/deltalake.md)
 - [Spark 3.0](advanced/new_in_spark_3.md)
 --------------------------
 1. What is Spark?  
@@ -88,7 +88,7 @@ Hive: It provides us with data warehousing facilities on top of an existing Hado
 17. What is parquet?    
 [Parquet and it's pros and cons - Stackoverflow](https://stackoverflow.com/a/36831549/8515731)
 
-![Row Vs Columnar](.\static\columnar_storage.png)
+![Row Vs Columnar](/static/columnar_storage.png)
 
 - The schema is stored in the footer of the file
 - Doesn't waste space storing missing value
@@ -195,7 +195,7 @@ Spark need not be installed when running a job under YARN or Mesos because Spark
 --------------------------
 35. What is the Catalyst framework?  
     
-    ![Query Optimization](.\static\query_optimization.png)
+    ![Query Optimization](/static/query_optimization.png)
     
     Catalyst framework is a new optimization framework present in Spark SQL. It allows Spark to automatically transform SQL queries by adding new optimizations to build a faster processing system.
     
@@ -423,4 +423,4 @@ time-consuming.
 - One Executor per node is considered to be more stable than two or three executors per node as is used in systems like YARN.  
 - Try to group-wide transformations together for best automatic optimization 
 
-![Partition Guideline](.\static\partition_guide.png)
+![Partition Guideline](/static/partition_guide.png)

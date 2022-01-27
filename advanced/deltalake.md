@@ -12,7 +12,7 @@ Data stored under delta lake is ACID compliant.
 - Relatively cheaper compared to a warehouse
 - Can store structured, semi-structured or unstructured data
 
-![Data Lake](..\static\data lake.jpg)
+![Data Lake](../static/datalake.jpg)
 
 #### Another Challenges with Data Lakes - 
 
@@ -74,7 +74,7 @@ Data Versioning and Time Travel
 
 By bringing the structure and governance inherent to data warehouses to data lakes with Delta Lake, you create the foundation for a Lakehouse.
 
-![Delta Lake](..\static\deltalake.jpg)
+![Delta Lake](../static/deltalake.jpg)
 
 #### Delta Lake Features - 
 
