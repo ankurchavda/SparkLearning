@@ -6,9 +6,9 @@ In Spark 2, the logical and physical optimizations were rule based optimizations
 
 ![Catalyst Optimizer Diagram](../static/Catalyst-Optimizer-diagram.png)
 
-Adaptive Query Execution allows Spark to re-optimize and adjust query plans based on runtime statistics collected during query executiion.
+Adaptive Query Execution allows Spark to re-optimize and adjust query plans based on runtime statistics collected during query execution.
 
-![Image showing the catalyst optimizer with adaptive planning.](..\static\AQE Planning.jpg)
+![Image showing the catalyst optimizer with adaptive planning.](../static/AQEPlanning.jpg)
 
 When AQE is on, spark will feed back statistics about the size of the data in the shuffle files, so that for the next stage, when working out the logical plan, it can dynamically switch join strategies, coalesce number of shuffle partitions or optimize skew joins.
 
@@ -30,7 +30,7 @@ Tuning shuffle partitions in Spark is a common pain point. The best number of pa
 - If there are too many partitions -
   - then the data size of each partition may be very small, leading to too many network data fetches to read the shuffle blocks. Which will also slow down the query because of inefficient I/O pattern. Having a large number of tasks also puts more burden on the task scheduler.
 
-To solve this problem, we can set a relatively large number of shuffle partitions at the beginning, the combine the adjacent small partitions into bigger partitions at runtime by looking at the shuffle files statistics.
+To solve this problem, we can set a relatively large number of shuffle partitions at the beginning, then combine the adjacent small partitions into bigger partitions at runtime by looking at the shuffle files statistics.
 
 For example, a small dataset of two partition is involved in a group by operation. The shuffle partition is set to 5, which leads to 5 partitions during the shuffle operation.  With AQE, the other three smaller partitions are coalesced into 1 larger partition, as a result, the final aggregation now only needs to perform three tasks rather than five.
 
@@ -40,7 +40,7 @@ For example, a small dataset of two partition is involved in a group by operatio
 
 Data skew occurs when data is unevenly distributed among partitions in the cluster. AQE detects such a skew automatically from shuffle file statistics. It then splits the skewed partitions into smaller subpartitions, which will be joined to the corresponding partition from the other side respectively.
 
-In the below example, AQE splits the A0 partition into two smaller partitions and joins the with B0. This leaders to 5 similar sized tasks that complete nearly at the same time versus one outlier task that takes much more time than the other tasks.
+In the below example, AQE splits the A0 partition into two smaller partitions and joins the with B0. This leads to 5 similar sized tasks that complete nearly at the same time versus one outlier task that takes much more time than the other tasks.
 
 ![Skew Join](../static/skew_join.jpg)
 
